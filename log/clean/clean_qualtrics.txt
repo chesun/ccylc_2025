@@ -1,0 +1,1381 @@
+----------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/ccylc/log/clean/clean_qualtrics.txt
+  log type:  text
+ opened on:  22 Sep 2025, 17:03:15
+
+. 
+. graph drop _all
+
+. set more off
+
+. set varabbrev off
+
+. set graphics off
+
+. set scheme s1color
+
+. set seed 1984
+
+. 
+. import delimited $projdir/dta/raw/ccylc_export_value.csv, varnames(1) rowrange(4
+> ) clear 
+(encoding automatically selected: UTF-8)
+(90 vars, 178 obs)
+
+. 
+. destring *, replace 
+startdate: contains nonnumeric characters; no replace
+enddate: contains nonnumeric characters; no replace
+status: all characters numeric; replaced as byte
+ipaddress: contains nonnumeric characters; no replace
+progress: all characters numeric; replaced as byte
+durationinseconds: all characters numeric; replaced as int
+finished: all characters numeric; replaced as byte
+recordeddate: contains nonnumeric characters; no replace
+responseid: contains nonnumeric characters; no replace
+recipientlastname: all characters numeric; replaced as byte
+(178 missing values generated)
+recipientfirstname: all characters numeric; replaced as byte
+(178 missing values generated)
+recipientemail: all characters numeric; replaced as byte
+(178 missing values generated)
+externalreference: all characters numeric; replaced as byte
+(178 missing values generated)
+locationlatitude: all characters numeric; replaced as double
+locationlongitude: all characters numeric; replaced as double
+distributionchannel: contains nonnumeric characters; no replace
+userlanguage: contains nonnumeric characters; no replace
+q11: contains nonnumeric characters; no replace
+q13: all characters numeric; replaced as byte
+(2 missing values generated)
+q13_4_text: contains nonnumeric characters; no replace
+q14: all characters numeric; replaced as byte
+(60 missing values generated)
+q21: all characters numeric; replaced as byte
+(96 missing values generated)
+q22: all characters numeric; replaced as byte
+(108 missing values generated)
+q23: contains nonnumeric characters; no replace
+q24: all characters numeric; replaced as byte
+(112 missing values generated)
+q31: all characters numeric; replaced as byte
+(162 missing values generated)
+q32: all characters numeric; replaced as byte
+(162 missing values generated)
+q33: all characters numeric; replaced as byte
+(178 missing values generated)
+q34: all characters numeric; replaced as byte
+(162 missing values generated)
+q35: all characters numeric; replaced as byte
+(162 missing values generated)
+q36: all characters numeric; replaced as byte
+(164 missing values generated)
+q37: all characters numeric; replaced as byte
+(164 missing values generated)
+q38_1: all characters numeric; replaced as byte
+(164 missing values generated)
+q38_2: all characters numeric; replaced as byte
+(164 missing values generated)
+q38_3: all characters numeric; replaced as byte
+(164 missing values generated)
+q39: contains nonnumeric characters; no replace
+q41: all characters numeric; replaced as byte
+(161 missing values generated)
+q42: contains nonnumeric characters; no replace
+q43: contains nonnumeric characters; no replace
+q44: all characters numeric; replaced as byte
+(178 missing values generated)
+q45: all characters numeric; replaced as byte
+(161 missing values generated)
+q51_1: all characters numeric; replaced as byte
+(72 missing values generated)
+q51_2: all characters numeric; replaced as byte
+(73 missing values generated)
+q51_3: all characters numeric; replaced as byte
+(74 missing values generated)
+q51_4: all characters numeric; replaced as byte
+(73 missing values generated)
+q51_5: all characters numeric; replaced as byte
+(73 missing values generated)
+q51_6: all characters numeric; replaced as byte
+(73 missing values generated)
+q51_7: all characters numeric; replaced as byte
+(73 missing values generated)
+q52_1: all characters numeric; replaced as byte
+(75 missing values generated)
+q52_2: all characters numeric; replaced as byte
+(75 missing values generated)
+q52_3: all characters numeric; replaced as byte
+(75 missing values generated)
+q52_4: all characters numeric; replaced as byte
+(76 missing values generated)
+q53: contains nonnumeric characters; no replace
+q61: all characters numeric; replaced as byte
+(148 missing values generated)
+q62: all characters numeric; replaced as byte
+(150 missing values generated)
+q63: contains nonnumeric characters; no replace
+q64: contains nonnumeric characters; no replace
+q65: contains nonnumeric characters; no replace
+q66_1: all characters numeric; replaced as byte
+(155 missing values generated)
+q66_2: all characters numeric; replaced as byte
+(155 missing values generated)
+q66_3: all characters numeric; replaced as byte
+(155 missing values generated)
+q66_4: all characters numeric; replaced as byte
+(155 missing values generated)
+q66_5: all characters numeric; replaced as byte
+(155 missing values generated)
+q66_6: all characters numeric; replaced as byte
+(156 missing values generated)
+q66_7: all characters numeric; replaced as byte
+(156 missing values generated)
+q67_1: all characters numeric; replaced as byte
+(157 missing values generated)
+q67_2: all characters numeric; replaced as byte
+(155 missing values generated)
+q67_3: all characters numeric; replaced as byte
+(155 missing values generated)
+q67_4: all characters numeric; replaced as byte
+(155 missing values generated)
+q71: all characters numeric; replaced as byte
+(157 missing values generated)
+q71_5_text: contains nonnumeric characters; no replace
+q72: all characters numeric; replaced as byte
+(158 missing values generated)
+q73: all characters numeric; replaced as byte
+(158 missing values generated)
+q74: all characters numeric; replaced as byte
+(159 missing values generated)
+q74_6_text: contains nonnumeric characters; no replace
+q75: contains nonnumeric characters; no replace
+q75_6_text: contains nonnumeric characters; no replace
+q76_1: all characters numeric; replaced as byte
+(162 missing values generated)
+q76_2: all characters numeric; replaced as byte
+(161 missing values generated)
+q76_3: all characters numeric; replaced as byte
+(161 missing values generated)
+q76_4: all characters numeric; replaced as byte
+(161 missing values generated)
+q76_5: all characters numeric; replaced as byte
+(161 missing values generated)
+q76_6: all characters numeric; replaced as byte
+(161 missing values generated)
+q76_7: all characters numeric; replaced as byte
+(161 missing values generated)
+q77: all characters numeric; replaced as byte
+(161 missing values generated)
+q78: contains nonnumeric characters; no replace
+q79: contains nonnumeric characters; no replace
+q710: all characters numeric; replaced as byte
+(162 missing values generated)
+q81: contains nonnumeric characters; no replace
+q82: contains nonnumeric characters; no replace
+
+. 
+. rename q11 email 
+
+. replace email = strlower(strtrim(ustrtrim(email)))
+(40 real changes made)
+
+. 
+. rename q13 type 
+
+. lab var type "Q1.3 Type of respondent"
+
+. lab def type 1 "Student" 2 "School Admin, Teacher, or Counselor" 3 "Parent/Guard
+> ian/Chaperone" 4 "Other"
+
+. lab val type type 
+
+. 
+. rename q13_4_text type_other_text
+
+. 
+. rename q14 school_level 
+
+. lab var school_level "Q1.4 Level of school currently enrolled in"
+
+. lab def school_level 1 "6-8th Grade" 2 "9-12th Grade" 3 "Community College" 4 "4
+> -Year College"
+
+. lab val school_level school_level
+
+. 
+. ************** questions for high school students 
+. /* shown to school_level==2 */
+. 
+. rename q21 plan_post_hs
+
+. lab var plan_post_hs "Q2.1 Plans after HS graduation"
+
+. lab def plan_post_hs 1 "UC" 2 "CSU" 3 "CCC" 4 "Private/Out of State" 5 "Vocation
+> al/Technical" 6 "Workforce" 7 "Family" 8 "Military" 9 "Undecided"
+
+. lab val plan_post_hs plan_post_hs
+
+. 
+. 
+. rename q22 highest_degree
+
+. // shown to inrange(plan_post_hs,1,5)
+. lab def highest_degree 1 "Q2.2 Vocational/Technical Certificate" 2 "Associate De
+> gree" 3 "Bachelor's Degree" 4 "Master's Degree" 5 "Doctoral Degree"
+
+. lab val highest_degree highest_degree
+
+. 
+. preserve 
+
+. import delimited $projdir/dta/raw/ccylc_export_label.csv, varnames(1) rowrange(4
+> ) clear 
+(encoding automatically selected: UTF-8)
+(90 vars, 178 obs)
+
+. 
+. rename q23 why_coll
+
+. lab var why_coll "Q2.3 Why is earning college certificate/degree important to yo
+> u"
+
+. // shown to inrange(plan_post_hs,1,5), check all that apply
+. gen why_coll_job = (strpos(why_coll, "Get a better job")!=0)
+
+. replace why_coll_job = . if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_job "Q2.3 Get a better job"
+
+. 
+. gen why_coll_money = (strpos(why_coll, "Make more money")!=0)
+
+. replace why_coll_money =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_money "Q2.3 Make more money"
+
+. 
+. gen why_coll_learn = (strpos(why_coll, "Learn about things that interest me") !=
+> 0)
+
+. replace why_coll_learn =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_learn "Q2.3 Learn about things that interest me"
+
+. 
+. gen why_coll_career = (strpos(why_coll, "Train for a specific career") !=0)
+
+. replace why_coll_career =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_career "Q2.3 Train for specific career"
+
+. 
+. gen why_coll_family = (strpos(why_coll, "Help my family financially") !=0)
+
+. replace why_coll_family =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_family "Q2.3 Help my family financially"
+
+. 
+. gen why_coll_status = (strpos(why_coll, "Earn respect/status") !=0)
+
+. replace why_coll_status =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_status "Q2.3 Earn respect/status"
+
+. 
+. gen why_coll_indep = (strpos(why_coll, "Gain independence")!=0)
+
+. replace why_coll_indep =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_indep "Q2.3 Gain Independence"
+
+. 
+. gen why_coll_promotion = (strpos(why_coll, "Earn a promotion at current employer
+> ")!=0)
+
+. replace why_coll_promotion =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_promotion "Q2.3 Earn promotion at current employer"
+
+. 
+. gen why_coll_expect = (strpos(why_coll, "It is a family expectation") !=0)
+
+. replace why_coll_expect =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_expect "Q2.3 Family expectation"
+
+. 
+. gen why_coll_friends = (strpos(why_coll, "My friends and/or peers are going to c
+> ollege") !=0)
+
+. replace why_coll_friends =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_friends "Q2.3 My friends are going to college"
+
+. 
+. gen why_coll_contribute = (strpos(why_coll, "Contribute to my community/society"
+> )!=0)
+
+. replace why_coll_contribute=. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_contribute "Q2.3 Contribute to community/society"
+
+. 
+. gen why_coll_grad = (strpos(why_coll, "Prepare for graduate or professional scho
+> ol")!=0)
+
+. replace why_coll_grad =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_grad "Q2.3 Prepare for graduate/professional school"
+
+. 
+. gen why_coll_children = (strpos(why_coll, "Provide for my own children")!=0)
+
+. replace why_coll_children =. if mi(why_coll)
+(111 real changes made, 111 to missing)
+
+. lab var why_coll_children "Q2.3 Provide for my own children"
+
+. 
+. keep responseid why_coll* 
+
+. 
+. tempfile why_coll
+
+. save `why_coll', replace 
+(file /home/tmp/St199103.000002 not found)
+file /home/tmp/St199103.000002 saved as .dta format
+
+. 
+. restore 
+
+. merge 1:1 responseid using `why_coll', nogen
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               178  
+    -----------------------------------------
+
+. 
+. ** Q2.4 what are you most likely to study in college? // shown to inrange(plan_p
+> ost_hs,1,5)
+. rename q24 major 
+
+. lab def major 1 "Business" 2 "Engineering" 3 "Natural Sciences" 4 "Social Scienc
+> es" 5 "Humanities & Art" 6 "Health Sciences" 7 "Education" 8 "Applied Sciences" 
+> 9 "Public Service" 10 "Undecided"
+
+. lab val major major 
+
+. lab var major "Q2.4 What are you most likely to study in college?"
+
+. 
+. 
+. 
+. ************ Transfer question block
+. 
+. ** q3.1 how old are you, displayed if inlist(school_level, 3,4)
+. rename q31 age 
+
+. lab def age 1 "18-24" 2 "25-29" 3 "30-34" 4 "35-39" 5 "40+" 6 "Prefer not to ans
+> wer"
+
+. lab val age age 
+
+. lab var age "Q3.1 how old are you"
+
+. 
+. 
+. ** q3.2 Do you have any children or dependents?
+. // displayed if inlist(school_level, 3,4)
+. rename q32 children 
+
+. lab def children 1 "Yes" 2 "No" 3 "Prefer not to answer"
+
+. lab val children children
+
+. lab var children "Q3.2 Do you have any children or dependents"
+
+. 
+. ** Q3.3 How many children or dependents do you care for?
+. // displayed if children==1
+. // this variable is entirely missing for all obs
+. rename q33 n_children
+
+. destring n_children, replace 
+n_children already numeric; no replace
+
+. 
+. ** Q3.4 Are you employed while attending college
+. // displayed if inlist(school_level, 3,4)
+. rename q34 employed 
+
+. lab def employed 1 "Full time" 2 "Part time" 3 "No, looking for work" 4 "No"
+
+. lab val employed employed
+
+. lab var employed "Q3.4 Are you employed while attending college?"
+
+. 
+. ** Q3.5 Do you intend to transfer to another college?
+. // displayed if inlist(school_level, 3,4)
+. rename q35 intend_transfer
+
+. lab def intend_transfer 1 "Yes" 2 "No" 3 "Not sure"
+
+. lab val intend_transfer intend_transfer
+
+. lab var intend_transfer "Q3.5 Do you intend to transfer to another college?"
+
+. 
+. ** Q3.6 Do you know where you would like to transfer to?
+. // displayed if intend_transfer==1
+. rename q36 where_transfer
+
+. lab def where_transfer 1 "UC Davis" 2 "Another UC" 3 "CSU" 4 "CCC" 5 "College Ou
+> tside CA" 6 "No" 7 "Not sure"
+
+. lab val where_transfer where_transfer
+
+. lab var where_transfer "Q3.6  Where do you want to transfer to?"
+
+. 
+. ** Q3.7 What do you plan to study once you transfer?
+. // displayed if intend_transfer==1
+. rename q37 major_after_transfer
+
+. lab val major_after_transfer major 
+
+. lab var major_after_transfer "Q3.7 Major after transfer"
+
+. 
+. ** Q3.8 Agreement with following stsatements
+. // displayed if inlist(intend_transfer,1,3)
+. rename q38_1 knowhow_apply
+
+. rename q38_2 knowhow_class
+
+. rename q38_3 concern_credit
+
+. 
+. lab def agree_disagree_4pt 1 "Strongly Agree" 2 "Agree" 3 "Disagree" 4 "Strongly
+>  Disagree"
+
+. lab val knowhow_apply knowhow_class concern_credit agree_disagree_4pt
+
+. 
+. lab var knowhow_apply "Q3.8 I know how to apply for 4-year college"
+
+. lab var knowhow_class "Q3.8 I know what classes I need to transfer to 4-year"
+
+. lab var concern_credit "Q3.8 I am concerned about credits transferring"
+
+. 
+. ** Q3.9 What are your biggest concerns about transferring colleges
+. // displayed if inlist(intend_transfer,1,3)
+. rename q39 transfer_concern_text
+
+. lab var transfer_concern_text "Q3.9 Biggest concerns about transfer"
+
+. 
+. 
+. 
+. ****************** Middle school question block
+. 
+. ** Q4.1 Do you think you will go to college after you graduate high school?
+. // displayed if school_level==1
+. rename q41 ms_coll
+
+. lab def ms_coll 1 "Yes" 2 "No" 3 "Not sure"
+
+. lab val ms_coll ms_coll
+
+. lab var ms_coll "Q4.1 Will you go to college after high school"
+
+. 
+. ** Q4.2 Why is going to college important, check all that apply
+. // displayed if school_leve==1 & ms_coll==1
+. preserve 
+
+. import delimited $projdir/dta/raw/ccylc_export_label.csv, varnames(1) rowrange(4
+> ) clear 
+(encoding automatically selected: UTF-8)
+(90 vars, 178 obs)
+
+. 
+. rename q42 ms_why_coll
+
+. lab var ms_why_coll "Q4.2 Why is going to college important to you"
+
+. // shown to inrange(plan_post_hs,1,5), check all that apply
+. gen ms_why_coll_job = (strpos(ms_why_coll, "Get a better job")!=0)
+
+. replace ms_why_coll_job = . if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_job "Get a better job"
+
+. 
+. gen ms_why_coll_money = (strpos(ms_why_coll, "Make more money")!=0)
+
+. replace ms_why_coll_money =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_money "Make more money"
+
+. 
+. gen ms_why_coll_learn = (strpos(ms_why_coll, "Learn about things that interest m
+> e") !=0)
+
+. replace ms_why_coll_learn =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_learn "Learn about things that interest me"
+
+. 
+. gen ms_why_coll_career = (strpos(ms_why_coll, "Train for a specific career") !=0
+> )
+
+. replace ms_why_coll_career =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_career "Train for specific career"
+
+. 
+. gen ms_why_coll_family = (strpos(ms_why_coll, "Help my family financially") !=0)
+
+. replace ms_why_coll_family =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_family "Help my family financially"
+
+. 
+. gen ms_why_coll_status = (strpos(ms_why_coll, "Earn respect/status") !=0)
+
+. replace ms_why_coll_status =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_status "Earn respect/status"
+
+. 
+. gen ms_why_coll_indep = (strpos(ms_why_coll, "Gain independence")!=0)
+
+. replace ms_why_coll_indep =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_indep "Gain Independence"
+
+. 
+. 
+. gen ms_why_coll_expect = (strpos(ms_why_coll, "It is a family expectation") !=0)
+
+. replace ms_why_coll_expect =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_expect "Family expectation"
+
+. 
+. 
+. gen ms_why_coll_contribute = (strpos(ms_why_coll, "Contribute to my community/so
+> ciety")!=0)
+
+. replace ms_why_coll_contribute=. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_contribute "Contribute to community/society"
+
+. 
+. gen ms_why_coll_grad = (strpos(ms_why_coll, "Prepare for graduate or professiona
+> l school")!=0)
+
+. replace ms_why_coll_grad =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_grad "Prepare for graduate/professional school"
+
+. 
+. gen ms_why_coll_children = (strpos(ms_why_coll, "Provide for my own children")!=
+> 0)
+
+. replace ms_why_coll_children =. if mi(ms_why_coll)
+(161 real changes made, 161 to missing)
+
+. lab var ms_why_coll_children "Provide for my own children"
+
+. 
+. keep responseid ms_why_coll* 
+
+. 
+. tempfile ms_why_coll
+
+. save `ms_why_coll', replace 
+(file /home/tmp/St199103.000004 not found)
+file /home/tmp/St199103.000004 saved as .dta format
+
+. 
+. restore 
+
+. merge 1:1 responseid using `ms_why_coll', nogen
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               178  
+    -----------------------------------------
+
+. 
+. ** Q4.3 What might you like to study in college check all that apply
+. // displayed if school_leve==1 & ms_coll==1
+. rename q43 ms_major_raw 
+
+. lab var ms_major_raw "Q4.3: what are you most likely to study in college"
+
+. 
+. gen ms_major_business = (strpos(ms_major_raw, "1") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_engineering = (strpos(ms_major_raw, "2") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_science = (strpos(ms_major_raw, "3") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_social = (strpos(ms_major_raw, "4") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_humanity = (strpos(ms_major_raw, "5") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_health = (strpos(ms_major_raw, "6") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_education = (strpos(ms_major_raw, "7") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_applied = (strpos(ms_major_raw, "8") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_service = (strpos(ms_major_raw, "9") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. gen ms_major_undecided = (strpos(ms_major_raw, "10") !=0) if !mi(ms_major_raw)
+(161 missing values generated)
+
+. 
+. 
+. lab var ms_major_business "Q4.3: Business"
+
+. lab var ms_major_engineering "Q4.3: Engineering"
+
+. lab var ms_major_science "Q4.3: Natural Scinces"
+
+. lab var ms_major_social "Q4.3: Social Sciences"
+
+. lab var ms_major_humanity "Q4.3: Humanities and Arts"
+
+. lab var ms_major_health "Q4.3: Health Sciences"
+
+. lab var ms_major_education "Q4.3: Education"
+
+. lab var ms_major_applied "Q4.3: Applied Sciences"
+
+. lab var ms_major_service "Q4.3: Public Service"
+
+. lab var ms_major_undecided "Q4.3: Undecided"
+
+. 
+. ** Q4.4 If you don't go to college, what do you plan to do the year after gradua
+> ting HS?
+. // displayed if school_leve==1 & inlist(ms_coll,2,3)
+. rename q44 ms_nocoll_plan
+
+. lab def ms_nocoll_plan 1 "Get a job" 2 "Start a family" 3 "Care for relatives" 4
+>  "Join the military" 5 "Learn a trade" 6 "Not sure"
+
+. lab val ms_nocoll_plan ms_nocoll_plan
+
+. lab var ms_nocoll_plan "Q4.4 Plan after HS if no college"
+
+. 
+. ** Q4.5 Is this your first college visit?
+. // displayed if type==1 & school_level==1
+. rename q45 ms_first_visit
+
+. lab def ms_first_visit 1 "Yes" 2 "No"
+
+. lab val ms_first_visit ms_first_visit
+
+. lab var ms_first_visit "Q4.5 Is this your first college visit?"
+
+. 
+. 
+. 
+. 
+. ************************* All students question block
+. ** q5.1 when thinking about your experience at CCYLC, how much do you agree...
+. // displayed if type==1
+. rename q51_1 all_exp_welcome
+
+. rename q51_2 all_exp_inspired
+
+. rename q51_3 all_exp_empowered
+
+. rename q51_4 all_exp_motivated
+
+. rename q51_5 all_exp_prepared
+
+. rename q51_6 all_exp_cost 
+
+. rename q51_7 all_exp_represent
+
+. 
+. lab var all_exp_welcome "Q5.1 I felt welcome"
+
+. lab var all_exp_inspired "Q5.1 I heard stories that inspired me"
+
+. lab var all_exp_empowered "Q5.1 I feel more empowered"
+
+. lab var all_exp_motivated "Q5.1 I am more motivated to apply for college"
+
+. lab var all_exp_prepared "Q5.1 I am more prepared to apply for college"
+
+. lab var all_exp_cost "Q5.1 I learned about programs that help with college costs
+> "
+
+. lab var all_exp_represent "Q5.1 There were speakers that represented my culture/
+> ethnicity"
+
+. 
+. lab val all_exp_* agree_disagree_4pt
+
+. 
+. ** q5.2 After attending CCYLC, how much do you agree with these statements:
+. // displayed if type==1
+. rename q52_1 all_ucd_ethnicity 
+
+. rename q52_2 all_ucd_gender
+
+. rename q52_3 all_ucd_background
+
+. rename q52_4 all_ucd_resource
+
+. 
+. lab var all_ucd_ethnicity "Q5.2 UC Davis is commited to supporting students of m
+> y ethnicity"
+
+. lab var all_ucd_gender "Q5.2 UC Davis is commited to supporting students of my g
+> ender"
+
+. lab var all_ucd_background "Q5.2 UC Davis is committed to supporting students of
+>  my background"
+
+. lab var all_ucd_resource "Q5.2 UC Davis has resources to meet my needs"
+
+. 
+. lab val all_ucd_* agree_disagree_4pt
+
+. 
+. ** Q5.3 What would it take for you to attend UC Davis?
+. rename q53 what_take_attend_ucd_text
+
+. lab var what_take_attend_ucd_text "Q5.3 What would it take for you to attend UC 
+> Davis?"
+
+. 
+. 
+. 
+. 
+. 
+. ****************** Parent question block
+. ** Q6.1 What best describes your attendance at CCYLC?
+. // displayed if type==3
+. rename q61 parent_role
+
+. lab def parent_role 1 "Chaperone" 2 "With my children" 3 "With my children and t
+> heir friends/relatives" 4 "On my own"
+
+. lab val parent_role parent_role
+
+. lab var parent_role "Q6.1 What best describes your attendance at CCYLC?"
+
+. 
+. ** Q6.2 How important is it to you that your children attend college?
+. // displayed if type==3
+. rename q62 parent_important_college
+
+. lab def parent_important_college 1 "Very important" 2 "Somewhat important" 3 "No
+> t at all important"
+
+. lab val parent_important_college parent_important_college
+
+. lab var parent_important_college "Q6.2 How important is it to you that your chil
+> dren attend college?"
+
+. 
+. ** Q6.3 Why do you feel it is important for your children to attend college? che
+> ck all that apply
+. // displayed if type==3 & parent_important_college!=3
+. 
+. preserve 
+
+. import delimited $projdir/dta/raw/ccylc_export_label.csv, varnames(1) rowrange(4
+> ) clear 
+(encoding automatically selected: UTF-8)
+(90 vars, 178 obs)
+
+. 
+. rename q63 parent_why_coll
+
+. lab var parent_why_coll "Q4.2 Why is going to college important to you"
+
+. // shown if type==3 & parent_important_college!=3
+. gen parent_why_coll_job = (strpos(parent_why_coll, "Get a better job")!=0)
+
+. replace parent_why_coll_job = . if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_job "Get a better job"
+
+. 
+. gen parent_why_coll_money = (strpos(parent_why_coll, "Make more money")!=0)
+
+. replace parent_why_coll_money =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_money "Make more money"
+
+. 
+. gen parent_why_coll_learn = (strpos(parent_why_coll, "Learn about things that in
+> terest them") !=0)
+
+. replace parent_why_coll_learn =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_learn "Learn about things that interest me"
+
+. 
+. gen parent_why_coll_career = (strpos(parent_why_coll, "Gain skills for the job t
+> hey are interested in") !=0)
+
+. replace parent_why_coll_career =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_career "Train for specific career"
+
+. 
+. gen parent_why_coll_family = (strpos(parent_why_coll, "Help our family financial
+> ly") !=0)
+
+. replace parent_why_coll_family =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_family "Help my family financially"
+
+. 
+. gen parent_why_coll_status = (strpos(parent_why_coll, "Earn respect/status") !=0
+> )
+
+. replace parent_why_coll_status =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_status "Earn respect/status"
+
+. 
+. gen parent_why_coll_indep = (strpos(parent_why_coll, "Gain independence")!=0)
+
+. replace parent_why_coll_indep =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_indep "Gain Independence"
+
+. 
+. 
+. gen parent_why_coll_expect = (strpos(parent_why_coll, "It is a family expectatio
+> n") !=0)
+
+. replace parent_why_coll_expect =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_expect "Family expectation"
+
+. 
+. 
+. gen parent_why_coll_contribute = (strpos(parent_why_coll, "Contribute to communi
+> ty/society")!=0)
+
+. replace parent_why_coll_contribute=. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_contribute "Contribute to community/society"
+
+. 
+. gen parent_why_coll_grad = (strpos(parent_why_coll, "Prepare for graduate or pro
+> fessional school")!=0)
+
+. replace parent_why_coll_grad =. if mi(parent_why_coll)
+(151 real changes made, 151 to missing)
+
+. lab var parent_why_coll_grad "Prepare for graduate/professional school"
+
+. 
+. 
+. keep responseid parent_why_coll* 
+
+. 
+. tempfile parent_why_coll
+
+. save `parent_why_coll', replace 
+(file /home/tmp/St199103.000006 not found)
+file /home/tmp/St199103.000006 saved as .dta format
+
+. 
+. restore 
+
+. merge 1:1 responseid using `parent_why_coll', nogen
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               178  
+    -----------------------------------------
+
+. 
+. ** Q6.4 What are you most concerned about as you help your child apply, decide w
+> here to go, and paying for college?
+. // shown if type==3 & parent_important_college!=3
+. rename q64 parent_concern_text
+
+. lab var parent_concern_text "Q6.4 Most concerned about college"
+
+. 
+. ** Q6.5 What are you most excited about for your children as it relates to the c
+> ollege experience?
+. // shown if type==3 & parent_important_college!=3
+. rename q65 parent_excite_text
+
+. lab var parent_excite_text "Q6.5 Most excited about college"
+
+. 
+. ** Q6.6 When thinking about your children's experience at CCYLC how much do you 
+> agree with...
+. // displayed if type==3
+. rename q66_1 parent_exp_welcome 
+
+. rename q66_2 parent_exp_inspired
+
+. rename q66_3 parent_exp_empowered
+
+. rename q66_4 parent_exp_motivated
+
+. rename q66_5 parent_exp_prepared
+
+. rename q66_6 parent_exp_cost
+
+. rename q66_7 parent_exp_represent
+
+. 
+. lab var parent_exp_welcome "Q6.6 My children felt welcome"
+
+. lab var parent_exp_inspired "Q6.6 My children heard stories that inspired them"
+
+. lab var parent_exp_empowered "Q6.6 My children felt more empowered"
+
+. lab var parent_exp_motivated "Q6.6  My children were more motivated to attend co
+> llege"
+
+. lab var parent_exp_prepared "Q6.6 My children were more prepared to apply for co
+> llege"
+
+. lab var parent_exp_cost "Q6.6 My childrened learned about programs that help wit
+> h college costs"
+
+. lab var parent_exp_represent "Q6.6 There were speakers that represented my child
+> ren's ethnicity"
+
+. 
+. lab val parent_exp_* agree_disagree_4pt
+
+. 
+. ** Q6.7 After attending CCYLC how much do you agree with...
+. // displayed if type==3
+. rename q67_1 parent_ucd_ethnicity 
+
+. rename q67_2 parent_ucd_gender
+
+. rename q67_3 parent_ucd_background
+
+. rename q67_4 parent_ucd_resource
+
+. 
+. lab var parent_ucd_ethnicity "Q6.7 UC Davis is commited to supporting students o
+> f my child's ethnicity"
+
+. lab var parent_ucd_gender "Q6.7 UC Davis is commited to supporting students of m
+> y child's gender"
+
+. lab var parent_ucd_background "Q6.7 UC Davis is committed to supporting students
+>  of same background as my child"
+
+. lab var parent_ucd_resource "Q6.7 UC Davis has resources to meet my child's need
+> s"
+
+. 
+. lab val parent_ucd_* agree_disagree_4pt
+
+. 
+. 
+. 
+. 
+. 
+. 
+. ***************** School personnel question block
+. ** 7.1 What is your role at the school?
+. // displayed if type==2
+. rename q71 staff_role 
+
+. lab def staff_role 1 "Teacher" 2 "Postsecondary Readiness Advisor" 3 "Counselor"
+>  4 "Administrator" 5 "Other (please specify)" 
+
+. lab val staff_role staff_role
+
+. lab var staff_role "Q7.1 What is your role at the school?"
+
+. 
+. rename q71_5_text staff_role_other_text
+
+. 
+. ** Q7.2 How long has your school been bringing students to CCYLC
+. // displayed if type==2
+. rename q72 staff_school_years
+
+. lab def staff_school_years 1 "First year" 2 "2 years" 3 "3 years" 4 "4 years" 5 
+> "5 years or more" 6 "Not sure"
+
+. lab val staff_school_years staff_school_years
+
+. lab var staff_school_years "Q7.2 How long has your school been attending CCYLC"
+
+. 
+. ** Q7.3 How many students did you bring with you today?
+. // displayed if type==2
+. rename q73 staff_n_students
+
+. destring staff_n_students, replace 
+staff_n_students already numeric; no replace
+
+. lab var staff_n_students "Q7.3 How many students did you bring"
+
+. 
+. ** Q7.4 How does your school fund this trip? check all that apply
+. // displayed if type==2
+. preserve 
+
+. import delimited $projdir/dta/raw/ccylc_export_label.csv, varnames(1) rowrange(4
+> ) clear 
+(encoding automatically selected: UTF-8)
+(90 vars, 178 obs)
+
+. 
+. rename q74 staff_fund_raw
+
+. 
+. gen staff_fund_fundraise = (strpos(staff_fund_raw, "School-based or student-led 
+> fundraising initiatives")!=0)
+
+. replace staff_fund_fundraise =. if mi(staff_fund_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_fund_grant = (strpos(staff_fund_raw, "Grants (such as the K-16 Educati
+> on Collaboratives Grant Program)") !=0)
+
+. replace staff_fund_grant =. if mi(staff_fund_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_fund_sponsor = (strpos(staff_fund_raw, "Sponsorships from local busine
+> sses")!=0)
+
+. replace staff_fund_sponsor =. if mi(staff_fund_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_fund_donation = (strpos(staff_fund_raw, "Direct donations from parents
+> /community members")!=0)
+
+. replace staff_fund_donation =. if mi(staff_fund_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_fund_partner = (strpos(staff_fund_raw, "Community partnerships")!=0)
+
+. replace staff_fund_partner =. if mi(staff_fund_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_fund_other = (strpos(staff_fund_raw, "Other (please specify):")!=0)
+
+. replace staff_fund_other=. if mi(staff_fund_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_fund_notsure = (strpos(staff_fund_raw, "I am not sure")!=0)
+
+. replace staff_fund_notsure =. if mi(staff_fund_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. lab var staff_fund_fundraise "Q7.4 fundraising initiatives"
+
+. lab var staff_fund_grant "Q7.4 grants"
+
+. lab var staff_fund_sponsor "Q7.4 Sponsorships from local businesses"
+
+. lab var staff_fund_donation "Q7.4 Direct donations from parents/community"
+
+. lab var staff_fund_partner "Q7.4 Community partnerships"
+
+. lab var staff_fund_other "Q7.4 Other (please specify)"
+
+. lab var staff_fund_notsure "Q7.4 Not sure"
+
+. 
+. 
+. rename q74_6_text staff_fund_other_text
+
+. 
+. keep responseid staff_fund_*
+
+. tempfile staff_fund 
+
+. save `staff_fund', replace 
+(file /home/tmp/St199103.000008 not found)
+file /home/tmp/St199103.000008 saved as .dta format
+
+. 
+. restore 
+
+. merge 1:1 responseid using `staff_fund', nogen 
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               178  
+    -----------------------------------------
+
+. 
+. 
+. 
+. ** Q7.5 What are the biggest barriers to organizing this trip? check all that ap
+> ply
+. // displayed if type==2
+. preserve 
+
+. import delimited $projdir/dta/raw/ccylc_export_label.csv, varnames(1) rowrange(4
+> ) clear 
+(encoding automatically selected: UTF-8)
+(90 vars, 178 obs)
+
+. 
+. rename q75 staff_barrier_raw
+
+. 
+. gen staff_barrier_cost = (strpos(staff_barrier_raw, "Cost")!=0)
+
+. replace staff_barrier_cost =. if mi(staff_barrier_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_barrier_transport = (strpos(staff_barrier_raw, "Arranging transportati
+> on")!=0)
+
+. replace staff_barrier_transport =. if mi(staff_barrier_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_barrier_distance = (strpos(staff_barrier_raw, "Distance to travel")!=0
+> )
+
+. replace staff_barrier_distance =. if mi(staff_barrier_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_barrier_interest = (strpos(staff_barrier_raw, "Student interest")!=0)
+
+. replace staff_barrier_interest =. if mi(staff_barrier_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_barrier_permission = (strpos(staff_barrier_raw, "Parent permission")!=
+> 0)
+
+. replace staff_barrier_permission =. if mi(staff_barrier_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. gen staff_barrier_other = (strpos(staff_barrier_raw, "Other (please specify):")!
+> =0)
+
+. replace staff_barrier_other =. if mi(staff_barrier_raw)
+(159 real changes made, 159 to missing)
+
+. 
+. lab var staff_barrier_cost "Q7.5 Cost"
+
+. lab var staff_barrier_transport "Q7.5 Transportation"
+
+. lab var staff_barrier_distance "Q7.5 Distance to travel"
+
+. lab var staff_barrier_interest "Q7.5 Student interest"
+
+. lab var staff_barrier_permission "Q7.5 Parent permission"
+
+. lab var staff_barrier_other "Q7.5 Other"
+
+. 
+. rename q75_6_text staff_barrier_other_text
+
+. 
+. keep responseid staff_barrier_*
+
+. tempfile staff_barrier 
+
+. save `staff_barrier', replace 
+(file /home/tmp/St199103.00000a not found)
+file /home/tmp/St199103.00000a saved as .dta format
+
+. 
+. restore 
+
+. merge 1:1 responseid using `staff_barrier', nogen 
+
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               178  
+    -----------------------------------------
+
+. 
+. 
+. ** Q7.6 When thinking about your children's experience at CCYLC how much do you 
+> agree with...
+. // displayed if type==2
+. rename q76_1 staff_exp_welcome 
+
+. rename q76_2 staff_exp_inspired
+
+. rename q76_3 staff_exp_empowered
+
+. rename q76_4 staff_exp_motivated
+
+. rename q76_5 staff_exp_prepared
+
+. rename q76_6 staff_exp_cost
+
+. rename q76_7 staff_exp_represent
+
+. 
+. lab var staff_exp_welcome "Q7.6 They felt welcome"
+
+. lab var staff_exp_inspired "Q7.6 they heard stories that inspired them"
+
+. lab var staff_exp_empowered "Q7.6 they felt more empowered"
+
+. lab var staff_exp_motivated "Q7.6  they were more motivated to attend college"
+
+. lab var staff_exp_prepared "Q7.6 they were more prepared to apply for college"
+
+. lab var staff_exp_cost "Q7.6 they learned about programs that help with college 
+> costs"
+
+. lab var staff_exp_represent "Q7.6 There were speakers that represented their eth
+> nicity"
+
+. 
+. lab val staff_exp_* agree_disagree_4pt
+
+. 
+. ** Q7.7 How well did CCYLC meet your expectations?
+. // displayed if type==2
+. rename q77 staff_expect
+
+. lab def staff_expect 1 "Exceeded" 2 "Fully met" 3 "Partially met" 4 "Not met"
+
+. lab val staff_expect staff_expect
+
+. lab var staff_expect "Q7.7 How well did CCYLC meet your expectations?"
+
+. 
+. ** Q7.8 What did you find to be the strongest/most impactful part of CCYLC?
+. // displayed if type==2
+. rename q78 staff_strongest_text
+
+. lab var staff_strongest_text "Q7.8 The strongest or most impactful part of CCYLC
+> "
+
+. 
+. ** Q7.9 What comments or recommendations do you have for improving students' exp
+> eriences at CCYLC?
+. // displayed if type==2
+. rename q79 staff_comment_text
+
+. lab var staff_comment_text "Q7.9 Comments/recommendations for improving student 
+> experience"
+
+. 
+. ** Q7.10 How likely are you to bring students to CCYLC in the future?
+. // displayed if type==2
+. rename q710 staff_likely_future
+
+. lab def staff_likely_future 1 "Very likely" 2 "Somewhat likely" 3 "Not likely"
+
+. lab val staff_likely_future staff_likely_future
+
+. lab var staff_likely_future "Q7.10 How likely are you to bring students in the f
+> uture"
+
+. 
+. 
+. 
+. 
+. 
+. ******************* Evaluation question block
+. // displayed if type!=2
+. 
+. ** Q8.1 strongest/most impactful part
+. rename q81 eval_strongest_text
+
+. lab var eval_strongest_text "Q8.1 Strongest/most impactful part"
+
+. 
+. ** Q8.2 Comments/recommendations
+. rename q82 eval_comment_text
+
+. lab var eval_comment_text "Q8.2 Comments/recommendations for next year"
+
+. 
+. save $projdir/dta/cln/ccylc_2025_clean.dta, replace 
+file /home/research/ca_ed_lab/projects/ccylc/dta/cln/ccylc_2025_clean.dta saved
+
+. 
+. log close 
+      name:  <unnamed>
+       log:  /home/research/ca_ed_lab/projects/ccylc/log/clean/clean_qualtrics.txt
+  log type:  text
+ closed on:  22 Sep 2025, 17:03:15
+----------------------------------------------------------------------------------
