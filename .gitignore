@@ -1,0 +1,19 @@
+# ─────────────────────────────────────────────────────────────
+# DATA — restricted. Lives on Scribe only, NEVER in this repo.
+# (CCYLC survey responses include respondent emails / minors' data.)
+# ─────────────────────────────────────────────────────────────
+dta/
+data/
+*.csv
+*.dta
+
+# Stata logs and outputs (regenerable; can echo data)
+log/
+out/
+output/
+*.smcl
+*.log
+
+# OS / editor cruft
+.DS_Store
+*~
