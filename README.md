@@ -30,6 +30,8 @@ types see different question blocks; the cleaning and tabulation code reproduces
 ## 2. How to run
 
 The pipeline runs on the lab's **Scribe** server (the restricted data lives only there).
+`do/main.do` is the single entry point — it sets the path global and runs the whole pipeline
+in dependency order:
 
 ```bash
 # On Scribe, from the project folder:
@@ -37,24 +39,9 @@ cd /home/research/ca_ed_lab/projects/ccylc
 stata-mp -b do do/main.do
 ```
 
-⚠️ **Important — `do/main.do` is currently a stub.** As of this writing it only `cd`s to the
-project folder and sources `do/settings.do`; it does **not** yet call the cleaning or
-tabulation steps. So `do do/main.do` alone will not reproduce the analysis. To run the full
-pipeline today, run the steps in order:
-
-```bash
-cd /home/research/ca_ed_lab/projects/ccylc
-stata-mp -b do do/settings.do                 # defines $projdir
-stata-mp -b do do/clean/clean_qualtrics.do    # raw export -> cleaned .dta
-stata-mp -b do do/explore/tab.do              # tabulations -> log
-```
-
-(Or, since each sub-do reads the `$projdir` global, source `settings.do` first within an
-interactive/batch session and then run the two sub-dos.)
-
-**Recommended fix for offboarding:** wire `do/main.do` to source `settings.do` and then call
-`do/clean/clean_qualtrics.do` and `do/explore/tab.do`, so there is a single entry point. See
-§8.
+That runs `do/settings.do` (defines `$projdir`), then `do/clean/clean_qualtrics.do`, then
+`do/explore/tab.do`. To re-run a single step on its own, source `settings.do` first so
+`$projdir` is defined, e.g. `do do/settings.do` then `do $projdir/do/clean/clean_qualtrics.do`.
 
 - **Runtime:** seconds to a couple of minutes (small survey).
 - **One-time setup:** standard Stata; no special SSC packages are required by the current code.
@@ -89,7 +76,7 @@ All paths are relative to `$projdir` = `/home/research/ca_ed_lab/projects/ccylc`
 
 | File | Purpose | Input | Output |
 |---|---|---|---|
-| `do/main.do` | Entry point: `cd`s to the project folder, sources `settings.do`. **Stub — does not yet run the pipeline (see §2).** | — | — |
+| `do/main.do` | Entry point: `cd`s to the project folder, sources `settings.do`, then runs `clean/clean_qualtrics.do` and `explore/tab.do` in order | — | — |
 | `do/settings.do` | Defines `global projdir`; sourced first | — | — |
 | `do/macros.doh` | Defines question-group locals (`hs_qs`, `ms_qs`, `transfer_qs`, `allstudent_qs`, `parent_qs`, `staff_qs`, `text_qs`) and each question's display-logic population criterion (`*_crit`). `include`d by `tab.do`. | — | — |
 | `do/clean/clean_qualtrics.do` | Imports the Qualtrics export, renames Q-codes to readable variables, applies value labels, builds multi-select "check all that apply" dummies, merges them back by `responseid` | `dta/raw/ccylc_export_value.csv`, `dta/raw/ccylc_export_label.csv` **[external — Qualtrics exports]** | `dta/cln/ccylc_2025_clean.dta`, `log/clean/clean_qualtrics.txt` |
@@ -133,9 +120,9 @@ First places to look: the run logs in `log/clean/` and `log/explore/`.
 
 **Known gaps to finish before final handoff:**
 
-- [ ] **`do/main.do` does not run the pipeline.** Wire it to source `settings.do` and call
-  `clean/clean_qualtrics.do` then `explore/tab.do`, so there is one true entry point.
-- [ ] **Completed server run not yet recorded.** Run the full pipeline on Scribe end-to-end and
+- [x] **`do/main.do` runs the full pipeline** — `settings.do` → `clean/clean_qualtrics.do` →
+  `explore/tab.do`. (Wired but not yet run on Scribe — see the next item.)
+- [ ] **Completed server run not yet recorded.** Run `do/main.do` on Scribe end-to-end and
   record the date + that the logs are clean.
 - [ ] **Cold-read test.** Have someone who is not the author reproduce the analysis on Scribe
   from this README alone.
