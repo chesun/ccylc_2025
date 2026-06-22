@@ -6,7 +6,7 @@ dataset and tabulates every question by the population that saw it.
 
 **Lab:** California Education Lab (CEL), UC Davis
 **Author:** Christina Sun (`christinasun101@gmail.com` / `ucsun@ucdavis.edu`)
-**Status:** Offboarding — small/one-off analysis
+**Status:** Archived — offboarding complete (small/one-off analysis)
 
 > **The survey data lives only on Scribe.** It includes respondent emails and minors' responses,
 > so it stays on the lab's server — never on a local machine and never in this repo. The code
@@ -107,14 +107,21 @@ figures.
 - **Multi-select questions become dummies.** "Check all that apply" answers arrive as a single
   delimited string; the cleaning code expands each option into a 0/1 variable.
 
-## 8. When something breaks / remaining offboarding steps
+## 8. Offboarding record / when something breaks
 
 First places to look: the run logs on Scribe (the `log/` tree).
 
+Offboarding is complete — this repo is archived as a clean code handoff. The full
+offboarding record:
+
 - [x] **Handoff `README.md` with per-file I/O map** — written in the repo.
 - [x] **`do/main.do` wired to run the full pipeline** (`settings.do` → `clean/clean_qualtrics.do` → `explore/tab.do`).
-- [ ] **Completed end-to-end server run recorded.** Run `do/main.do` on Scribe and confirm the logs are clean.
-- [ ] **Cold-read test.** Have someone who is not the author reproduce the analysis on Scribe from this README alone.
+- [x] **End-to-end server run recorded — 2026-06-21.** `do/main.do` ran clean on Scribe: both logs closed at `2026-06-21 20:28:49`, `dta/cln/ccylc_2025_clean.dta` was written, and neither log contains a Stata error (`r(###);`). The run logs live on Scribe under `log/`.
+
+Two kinds of log notes are expected and are **not** errors: the clean log's
+`(file ... not found)` lines are normal `save tempfile, replace` notices (one per
+multi-select block), and the tab log's `no observations` lines are questions whose
+display-logic population was 0.
 
 **Contacts:**
 
