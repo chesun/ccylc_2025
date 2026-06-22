@@ -1,17 +1,16 @@
 # Cesar Chavez Youth Leadership Conference 2025 — `ccylc_2025`
 
-A lightweight Stata project for the survey fielded to attendees **after the 2025 Cesar Chavez
-Youth Leadership Conference (CCYLC)**. It holds the code that cleaned the survey export into an
-analysis dataset and tabulated every question by the population that saw it.
+A lightweight Stata analysis of the survey fielded to attendees **after the 2025 Cesar Chavez
+Youth Leadership Conference (CCYLC)**. It cleans the Qualtrics survey export into an analysis
+dataset and tabulates every question by the population that saw it.
 
 **Lab:** California Education Lab (CEL), UC Davis
 **Author:** Christina Sun (`christinasun101@gmail.com` / `ucsun@ucdavis.edu`)
-**Status:** Offboarding — code archive (survey data purged)
+**Status:** Offboarding — small/one-off analysis
 
-> **The survey data has been purged.** It included respondent emails and minors' responses, so
-> the export and the cleaned dataset are **not retained** and are not in this repo. What remains
-> is the **code** — a record of how the survey was cleaned and analyzed. Re-running it would
-> require re-obtaining the original Qualtrics export.
+> **The survey data lives only on Scribe.** It includes respondent emails and minors' responses,
+> so it stays on the lab's server — never on a local machine and never in this repo. The code
+> here runs against that data on Scribe.
 
 > New here? This README assumes you're comfortable with Stata but possibly new to git.
 
@@ -19,22 +18,22 @@ analysis dataset and tabulated every question by the population that saw it.
 
 ## 1. What this repo is
 
-This repo preserves the Stata code for the post-conference survey: a cleaning step that turned
-the Qualtrics export into a labeled analysis dataset, and an exploration step that tabulated
-every question. It did not produce paper-ready tables or figures — its products were the cleaned
-dataset and tabulation logs, none of which are retained (see the note above).
+The repo holds the Stata code for the post-conference survey: a cleaning step that turns the
+Qualtrics export into a labeled analysis dataset, and an exploration step that tabulates every
+question. It does not produce paper-ready tables or figures — its products are the cleaned
+dataset and tabulation logs, which live on Scribe alongside the data.
 
-Respondents were students (middle school, high school, community/4-year college), parents/
-guardians, and school staff. The survey used Qualtrics display logic, so different respondent
-types saw different question blocks; the cleaning and tabulation code reproduces that logic.
+Respondents are students (middle school, high school, community/4-year college), parents/
+guardians, and school staff. The survey uses Qualtrics display logic, so different respondent
+types see different question blocks; the cleaning and tabulation code reproduces that logic.
 
 > **Note:** This is a lightweight project. There is no `decisions/` folder or golden-master
 > comparison; the load-bearing documentation is §4 (the per-file input/output map) below.
 
-## 2. How it ran
+## 2. How to run
 
-The code ran on the lab's **Scribe** server. `do/main.do` is the single entry point — it sets
-the path global and runs the whole pipeline in dependency order:
+The analysis runs on the lab's **Scribe** server, where the data lives. `do/main.do` is the
+single entry point — it sets the path global and runs the whole pipeline in dependency order:
 
 ```bash
 # On Scribe, from the project folder:
@@ -43,13 +42,10 @@ stata-mp -b do do/main.do
 ```
 
 That runs `do/settings.do` (defines `$projdir`), then `do/clean/clean_qualtrics.do`, then
-`do/explore/tab.do`.
+`do/explore/tab.do`. To re-run a single step on its own, source `settings.do` first so
+`$projdir` is defined, e.g. `do do/settings.do` then `do $projdir/do/clean/clean_qualtrics.do`.
 
-Because the survey data has been purged, this **won't run as-is** — the cleaning step has no
-input to read. Reproducing the analysis would mean re-obtaining the original Qualtrics export
-and placing it where `settings.do` expects the project to live.
-
-- **Runtime (when it ran):** seconds to a couple of minutes (small survey).
+- **Runtime:** seconds to a couple of minutes (small survey).
 - **Setup:** standard Stata; no special SSC packages are required by the code.
 - **Seed:** `set seed 1984` is set in both `clean_qualtrics.do` and `tab.do`.
 
@@ -65,24 +61,24 @@ ccylc_2025/
 │   │   └── clean_qualtrics.do  # cleans the survey export
 │   └── explore/
 │       └── tab.do              # tabulates every question
-└── log/                        # Stata logs (gitignored; not retained)
+└── log/                        # Stata logs (on Scribe; gitignored)
 ```
 
-Only `do/` and the dotfiles are tracked on GitHub. Data and logs were never tracked, and the
-data has been purged.
+Only `do/` and the dotfiles are tracked on GitHub. The data and logs live on Scribe and are
+never committed.
 
 ## 4. Inputs and outputs of each do file
 
-The core of the handoff — a record of what each step read and wrote when it ran. (The data files
-referenced here have been purged; this documents the code's logic, not files you'll find today.)
+The core of the handoff. The data files all live on Scribe (never local, never in the repo);
+this maps what each step reads and writes there.
 
-| File | Purpose | Read | Wrote |
+| File | Purpose | Reads | Writes |
 |---|---|---|---|
 | `do/main.do` | Entry point: `cd`s to the project folder, sources `settings.do`, then runs `clean/clean_qualtrics.do` and `explore/tab.do` in order | — | — |
 | `do/settings.do` | Defines `global projdir`; sourced first | — | — |
 | `do/macros.doh` | Defines question-group locals (`hs_qs`, `ms_qs`, `transfer_qs`, `allstudent_qs`, `parent_qs`, `staff_qs`, `text_qs`) and each question's display-logic population criterion (`*_crit`). `include`d by `tab.do`. | — | — |
-| `do/clean/clean_qualtrics.do` | Renames Q-codes to readable variables, applies value labels, builds multi-select "check all that apply" dummies, merges them by `responseid` | the Qualtrics survey export **[external; purged]** | a cleaned analysis dataset + a clean log |
-| `do/explore/tab.do` | For each question, counts the display-logic population and `tab`s the variable, by respondent block | the cleaned dataset; `include`s `do/macros.doh` | a tabulation log |
+| `do/clean/clean_qualtrics.do` | Renames Q-codes to readable variables, applies value labels, builds multi-select "check all that apply" dummies, merges them by `responseid` | the Qualtrics survey export (on Scribe) **[external]** | a cleaned analysis dataset + a clean log (on Scribe) |
+| `do/explore/tab.do` | For each question, counts the display-logic population and `tab`s the variable, by respondent block | the cleaned dataset; `include`s `do/macros.doh` | a tabulation log (on Scribe) |
 
 **Why the cleaning step reads two exports:** `clean_qualtrics.do` reads the **value** export for
 most variables, and re-imports the **label** export inside `preserve`/`restore` blocks to parse
@@ -91,15 +87,14 @@ the free-text labels of the multi-select "check all that apply" questions (e.g. 
 
 ## 5. Outputs
 
-When it ran, the pipeline produced a cleaned analysis dataset and tabulation logs. None of that
-is in this repo — data and logs were never tracked, and the data has been purged. There are no
-tracked tables or figures.
+The pipeline writes a cleaned analysis dataset and tabulation logs on Scribe. None of it is
+tracked in this repo — the data and logs stay on the server. There are no tracked tables or
+figures.
 
 ## 6. What NOT to commit
 
-- **Never commit survey data or logs.** They are gitignored for a reason: the survey collected
-  **respondent emails** and **minors' responses**. That sensitivity is why the data was purged,
-  and why it must never be committed if it is ever re-obtained. See the
+- **Never commit the survey data or logs, and never copy them off Scribe.** The survey collected
+  **respondent emails** and **minors' responses**; that data lives only on the server. See the
   [data-safety guidance](https://chesun.github.io/cel_resource_hub/workflow-tips/data-safety/).
 - Do not copy `.git/` onto Scribe, and do not put GitHub credentials on the server.
 
@@ -112,12 +107,14 @@ tracked tables or figures.
 - **Multi-select questions become dummies.** "Check all that apply" answers arrive as a single
   delimited string; the cleaning code expands each option into a 0/1 variable.
 
-## 8. Status / notes
+## 8. When something breaks / remaining offboarding steps
 
-- The survey ran and was analyzed during the project; the data has since been **purged** (PII),
-  so this repo now stands as a **code archive**.
-- `do/main.do` is wired to run the full pipeline (`settings.do` → `clean/clean_qualtrics.do` →
-  `explore/tab.do`); it can't be re-run as-is without re-obtaining the survey export.
+First places to look: the run logs on Scribe (the `log/` tree).
+
+- [x] **Handoff `README.md` with per-file I/O map** — written in the repo.
+- [x] **`do/main.do` wired to run the full pipeline** (`settings.do` → `clean/clean_qualtrics.do` → `explore/tab.do`).
+- [ ] **Completed end-to-end server run recorded.** Run `do/main.do` on Scribe and confirm the logs are clean.
+- [ ] **Cold-read test.** Have someone who is not the author reproduce the analysis on Scribe from this README alone.
 
 **Contacts:**
 
