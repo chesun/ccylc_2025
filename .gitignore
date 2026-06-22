@@ -7,12 +7,11 @@ data/
 *.csv
 *.dta
 
-# Stata logs and outputs (regenerable; can echo data)
-log/
+# Data-bearing exports (can contain raw values)
 out/
 output/
-*.smcl
-*.log
+
+# Run logs ARE tracked (a version history of what ran) — keep them PII-free.
 
 # OS / editor cruft
 .DS_Store

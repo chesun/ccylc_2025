@@ -61,11 +61,11 @@ ccylc_2025/
 │   │   └── clean_qualtrics.do  # cleans the survey export
 │   └── explore/
 │       └── tab.do              # tabulates every question
-└── log/                        # Stata logs (on Scribe; gitignored)
+└── log/                        # run logs (committed; PII-free)
 ```
 
-Only `do/` and the dotfiles are tracked on GitHub. The data and logs live on Scribe and are
-never committed.
+Only `do/`, the run logs, and the dotfiles are tracked on GitHub. The data lives on Scribe and
+is never committed; the run logs *are* committed (PII-free) as a record of the run.
 
 ## 4. Inputs and outputs of each do file
 
@@ -77,8 +77,8 @@ this maps what each step reads and writes there.
 | `do/main.do` | Entry point: `cd`s to the project folder, sources `settings.do`, then runs `clean/clean_qualtrics.do` and `explore/tab.do` in order | — | — |
 | `do/settings.do` | Defines `global projdir`; sourced first | — | — |
 | `do/macros.doh` | Defines question-group locals (`hs_qs`, `ms_qs`, `transfer_qs`, `allstudent_qs`, `parent_qs`, `staff_qs`, `text_qs`) and each question's display-logic population criterion (`*_crit`). `include`d by `tab.do`. | — | — |
-| `do/clean/clean_qualtrics.do` | Renames Q-codes to readable variables, applies value labels, builds multi-select "check all that apply" dummies, merges them by `responseid` | the Qualtrics survey export (on Scribe) **[external]** | a cleaned analysis dataset + a clean log (on Scribe) |
-| `do/explore/tab.do` | For each question, counts the display-logic population and `tab`s the variable, by respondent block | the cleaned dataset; `include`s `do/macros.doh` | a tabulation log (on Scribe) |
+| `do/clean/clean_qualtrics.do` | Renames Q-codes to readable variables, applies value labels, builds multi-select "check all that apply" dummies, merges them by `responseid` | the Qualtrics survey export (on Scribe) **[external]** | a cleaned analysis dataset (on Scribe) + a clean log (committed under `log/`) |
+| `do/explore/tab.do` | For each question, counts the display-logic population and `tab`s the variable, by respondent block | the cleaned dataset; `include`s `do/macros.doh` | a tabulation log (committed under `log/`) |
 
 **Why the cleaning step reads two exports:** `clean_qualtrics.do` reads the **value** export for
 most variables, and re-imports the **label** export inside `preserve`/`restore` blocks to parse
@@ -87,14 +87,16 @@ the free-text labels of the multi-select "check all that apply" questions (e.g. 
 
 ## 5. Outputs
 
-The pipeline writes a cleaned analysis dataset and tabulation logs on Scribe. None of it is
-tracked in this repo — the data and logs stay on the server. There are no tracked tables or
-figures.
+The pipeline writes a cleaned analysis dataset (stays on Scribe, not tracked) and run logs,
+which **are** committed to this repo under `log/` (PII-free) as a record of what ran. There are
+no tracked tables or figures.
 
 ## 6. What NOT to commit
 
-- **Never commit the survey data or logs, and never copy them off Scribe.** The survey collected
-  **respondent emails** and **minors' responses**; that data lives only on the server. See the
+- **Never commit the survey data, and never copy it off Scribe.** The survey collected
+  **respondent emails** and **minors' responses**; that data lives only on the server. (Run logs
+  *are* committed — but only because they're PII-free; never commit a log that prints identifiers
+  or raw data rows.) See the
   [data-safety guidance](https://chesun.github.io/cel_resource_hub/workflow-tips/data-safety/).
 - Do not copy `.git/` onto Scribe, and do not put GitHub credentials on the server.
 
