@@ -1,5 +1,7 @@
 # Cesar Chavez Youth Leadership Conference 2025 — `ccylc_2025`
 
+> **Part of the [CEL Resource Hub](https://christinasun.net/cel_resource_hub/)** — Christina Sun's index of CEL code handoffs plus setup and workflow guides for inheriting them. Hub page for this repo: <https://christinasun.net/cel_resource_hub/repositories/ccylc-2025/>.
+
 A lightweight Stata analysis of the survey fielded to attendees **after the 2025 Cesar Chavez
 Youth Leadership Conference (CCYLC)**. It cleans the Qualtrics survey export into an analysis
 dataset and tabulates every question by the population that saw it.
